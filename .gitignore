@@ -103,3 +103,4 @@ clean
 vendor
 .idea
 *.iml
+ovh.conf
