@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"strconv"
 )
 
 func main() {
@@ -27,20 +26,18 @@ func main() {
 	log.Printf("file with record id for domain %s removed", domain)
 }
 
-func readId(filePath string) int {
+func readId(filePath string) string {
 	assertExists(filePath)
-	dat, err := ioutil.ReadFile(filePath)
+	id, err := ioutil.ReadFile(filePath)
 	assertOk(err)
-	id, err := strconv.Atoi(string(dat))
-	assertOk(err)
-	return id
+	return string(id)
 }
 func remove(filePath string) {
 	err := os.Remove(filePath)
 	assertOk(err)
 }
-func deleteRecord(client *ovh.Client, domain string, id int) {
-	err := client.Delete(fmt.Sprintf("/domain/zone/%s/record/%d", domain, id), struct{}{})
+func deleteRecord(client *ovh.Client, domain string, id string) {
+	err := client.Delete(fmt.Sprintf("/domain/zone/%s/record/%s", domain, id), struct{}{})
 	assertOk(err)
 }
 
